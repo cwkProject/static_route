@@ -93,7 +93,8 @@ RouteFactory generateRouteFactory(Iterable<StaticRoute> routes) {
       table[settings.name]?.call(settings) ??
       MaterialPageRoute(
         settings: settings,
-        builder: (context) => Center(child: Text('${settings.name} route unregistered')),
+        builder: (context) =>
+            Center(child: Text('${settings.name} route unregistered')),
       );
 }
 

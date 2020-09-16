@@ -1,7 +1,7 @@
 name: static_route
-description: Static page navigation router template library.
+description: Provide statically registered page navigation template library.
 
-version: 1.0.0
+version: 1.0.1
 
 homepage: https://github.com/cwkProject/static_route
 publish_to: https://pub.dartlang.org
