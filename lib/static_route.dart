@@ -51,6 +51,8 @@ import 'package:flutter/material.dart';
 /// ```
 ///
 class StaticRoute {
+  const StaticRoute({required this.name, required this.builder});
+
   /// 页面名称
   ///
   /// 路由名称，用于[Navigator.pushNamed]等导航方法，
@@ -59,12 +61,6 @@ class StaticRoute {
 
   /// 路由构建器
   final RouteFactory builder;
-
-  const StaticRoute({
-    @required this.name,
-    @required this.builder,
-  })  : assert(name != null),
-        assert(builder != null);
 }
 
 /// 生成静态路由工厂
@@ -85,8 +81,6 @@ class StaticRoute {
 /// ```
 ///
 RouteFactory generateRouteFactory(Iterable<StaticRoute> routes) {
-  assert(routes != null);
-
   final table = {for (var route in routes) route.name: route.builder};
 
   return (settings) =>

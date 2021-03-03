@@ -59,7 +59,7 @@ class NextPage extends StatefulWidget {
     builder: (RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
-        builder: (context) => NextPage(settings.arguments),
+        builder: (context) => NextPage(settings.arguments as String),
       );
     },
   );
