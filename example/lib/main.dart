@@ -22,7 +22,6 @@ final routeTable = <StaticRoute>[
 ];
 
 class HomePage extends StatelessWidget {
-
   static final route = StaticRoute(
     name: 'HomePage',
     builder: (RouteSettings settings) {
@@ -38,10 +37,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('HomePage')),
       body: Center(
-        child: RaisedButton(
+        child: ElevatedButton(
           child: Text('Next page'),
           onPressed: () {
-            Navigator.pushNamed(context, NextPage.route.name, arguments: 'from HomePage');
+            Navigator.pushNamed(context, NextPage.route.name,
+                arguments: 'from HomePage');
           },
         ),
       ),
@@ -54,13 +54,10 @@ class NextPage extends StatefulWidget {
 
   final String content;
 
-  static final route = StaticRoute(
+  static final route = StaticRouteFactory(
     name: 'NextPage',
-    builder: (RouteSettings settings) {
-      return MaterialPageRoute(
-        settings: settings,
-        builder: (context) => NextPage(settings.arguments as String),
-      );
+    builder: (BuildContext context, Object? arguments) {
+      return NextPage(arguments as String);
     },
   );
 
