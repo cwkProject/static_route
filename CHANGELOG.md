@@ -1,3 +1,7 @@
+## [2.1.1] - 2023/12/28
+
+* `StaticRouteFactory`增加`MaterialPageRoute`中的四个bool变量传递
+
 ## [2.1.0] - 2022/12/13
 
 * 新增`StaticRoute`的子类`StaticRouteFactory`以简化路由声明

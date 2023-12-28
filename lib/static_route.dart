@@ -55,13 +55,30 @@ typedef StaticRouteWidgetBuilder = Widget Function(
 ///
 /// ```
 ///
+/// * [maintainState],
+/// {@macro flutter.widgets.ModalRoute.maintainState}
+/// * [fullscreenDialog],
+/// {@macro flutter.widgets.PageRoute.fullscreenDialog}
+/// * [allowSnapshotting],
+/// {@macro flutter.widgets.TransitionRoute.allowSnapshotting}
+/// * [barrierDismissible],
+/// {@macro  flutter.widgets.ModalRoute.barrierDismissible}
 class StaticRouteFactory extends StaticRoute {
-  StaticRouteFactory(
-      {required String name, required StaticRouteWidgetBuilder builder})
-      : super(
+  StaticRouteFactory({
+    required String name,
+    required StaticRouteWidgetBuilder builder,
+    bool maintainState = true,
+    bool fullscreenDialog = false,
+    bool allowSnapshotting = true,
+    bool barrierDismissible = false,
+  }) : super(
           name: name,
           builder: (settings) => MaterialPageRoute(
             settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            allowSnapshotting: allowSnapshotting,
+            barrierDismissible: barrierDismissible,
             builder: (context) => builder(context, settings.arguments),
           ),
         );
