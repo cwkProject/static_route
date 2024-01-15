@@ -8,6 +8,12 @@ import 'package:flutter/material.dart';
 typedef StaticRouteWidgetBuilder = Widget Function(
     BuildContext context, Object? arguments);
 
+/// 静态路由页面退出回调
+///
+/// [arguments]为进入页面时传递的参数，[result]为退出页面时[Navigator.pop]返回的参数。
+typedef OnStaticRouteExit = void Function(
+    BuildContext context, Object? arguments, dynamic result);
+
 /// 静态路由构建器
 ///
 /// 此路由构建器为[StaticRoute]的常用简单实现
@@ -65,14 +71,14 @@ typedef StaticRouteWidgetBuilder = Widget Function(
 /// {@macro  flutter.widgets.ModalRoute.barrierDismissible}
 class StaticRouteFactory extends StaticRoute {
   StaticRouteFactory({
-    required String name,
+    required super.name,
     required StaticRouteWidgetBuilder builder,
     bool maintainState = true,
     bool fullscreenDialog = false,
     bool allowSnapshotting = true,
     bool barrierDismissible = false,
+    super.onExit,
   }) : super(
-          name: name,
           builder: (settings) => MaterialPageRoute(
             settings: settings,
             maintainState: maintainState,
@@ -133,7 +139,7 @@ class StaticRouteFactory extends StaticRoute {
 /// ```
 ///
 class StaticRoute {
-  const StaticRoute({required this.name, required this.builder});
+  const StaticRoute({required this.name, required this.builder, this.onExit});
 
   /// 页面名称
   ///
@@ -143,6 +149,9 @@ class StaticRoute {
 
   /// 路由构建器
   final RouteFactory builder;
+
+  /// 静态路由页面退出回调
+  final OnStaticRouteExit? onExit;
 }
 
 /// 生成静态路由工厂
@@ -163,9 +172,33 @@ class StaticRoute {
 /// ```
 ///
 RouteFactory generateRouteFactory(Iterable<StaticRoute> routes) {
-  final table = {for (var route in routes) route.name: route.builder};
+  String? getName(String? name) {
+    if (name != null && name.startsWith('/') && name.length > 1) {
+      return name.substring(1);
+    }
 
-  return (settings) => table[settings.name]?.call(settings);
+    return name;
+  }
+
+  final table = {for (var route in routes) getName(route.name): route};
+
+  return (settings) {
+    final staticRoute = table[getName(settings.name)];
+    if (staticRoute == null) {
+      return null;
+    }
+
+    final route = staticRoute.builder(settings);
+
+    if (route != null && staticRoute.onExit != null) {
+      route.popped.then((value) {
+        staticRoute.onExit
+            ?.call(route.navigator!.context, settings.arguments, value);
+      });
+    }
+
+    return route;
+  };
 }
 
 /// 扩展[Iterable<StaticRoute>]增加路由器生成快捷方式
