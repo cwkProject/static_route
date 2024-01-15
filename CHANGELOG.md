@@ -1,3 +1,8 @@
+## [2.1.2] - 2024/1/15
+
+* `StaticRoute`增加`onExit`方法
+* 增加对`StaticRoute.name`的`/`前缀兼容
+
 ## [2.1.1] - 2023/12/28
 
 * `StaticRouteFactory`增加`MaterialPageRoute`中的四个bool变量传递
